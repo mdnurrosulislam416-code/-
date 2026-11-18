@@ -1,0 +1,81 @@
+name: Build NurGram APKs
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      CCACHE_COMPILERCHECK: "%compiler% -dumpmachine; %compiler% -dumpversion"
+      CCACHE_NOHASHDIR: "true"
+      CCACHE_MAXSIZE: "10G"
+      CCACHE_HARDLINK: "true"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0
+
+      - name: Create API_KEYS config
+        run: |
+          cat << 'EOF' > API_KEYS
+          APP_ID = ${{ secrets.TELEGRAM_APP_ID || '6' }}
+          APP_HASH = "${{ secrets.TELEGRAM_APP_HASH || 'eb06d4abfb49dc3eeb1aeb98ae0f581e' }}"
+          MAPS_V2_API = "${{ secrets.MAPS_KEY || '' }}"
+          EOF
+          if [ -n "${{ secrets.CERT_KEY }}" ]; then
+            cat << 'EOF' >> API_KEYS
+          SIGNING_KEY_PASSWORD = ${{ secrets.CERT_KEY }}
+          SIGNING_KEY_ALIAS = ${{ secrets.CERT_KEY }}
+          SIGNING_KEY_STORE_PASSWORD = ${{ secrets.CERT_KEY }}
+          EOF
+          fi
+
+      - name: Setup Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          cache: 'gradle'
+
+      - name: Cache Gradle Build
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches/build-cache-*
+            ~/.gradle/buildOutputCleanup/cache.properties
+          key: gradle-builds-${{ github.sha }}
+          restore-keys: |
+            gradle-builds
+
+      - name: Set up ccache
+        uses: hendrikmuhs/ccache-action@v1.2
+        with:
+          key: ccache
+          restore-keys: ccache
+
+      - name: Setup Android SDK Tools
+        uses: android-actions/setup-android@v3
+
+      - name: Free disk space & install native deps
+        run: |
+          sudo rm -rf /usr/share/dotnet/ /usr/local/graalvm/ /usr/local/.ghcup/ /usr/local/share/powershell /usr/local/share/chromium
+          sudo apt-get update
+          sudo apt-get install -y bison gcc make curl ninja-build ccache
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Build NurGram Debug & Release APKs
+        run: ./gradlew assembleBetaDebug assembleAfatRelease
+
+      - name: Upload NurGram APKs
+        uses: actions/upload-artifact@v4
+        with:
+          name: NurGram-APKs
+          path: |
+            TMessagesProj/build/outputs/apk/beta/debug/NurGram-debug.apk
+            TMessagesProj/build/outputs/apk/afat/release/NurGram-release.apk
+

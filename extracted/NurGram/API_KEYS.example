@@ -1,0 +1,10 @@
+# Obtain Telegram API keys at https://core.telegram.org/api/obtaining_api_id
+APP_ID = 6
+APP_HASH = "eb06d4abfb49dc3eeb1aeb98ae0f581e"
+MAPS_V2_API = ""
+
+# Optional release signing keystore configuration (leave omitted to build unsigned release APK)
+# SIGNING_KEY_STORE_FILE = config/nurgram.jks
+# SIGNING_KEY_STORE_PASSWORD = your_store_password
+# SIGNING_KEY_ALIAS = your_key_alias
+# SIGNING_KEY_PASSWORD = your_key_password

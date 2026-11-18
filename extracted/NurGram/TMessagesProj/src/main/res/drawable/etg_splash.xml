@@ -1,0 +1,122 @@
+<animated-vector
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt">
+    <aapt:attr name="android:drawable">
+        <vector
+            android:name="splash"
+            android:width="320dp"
+            android:height="320dp"
+            android:viewportWidth="320"
+            android:viewportHeight="320">
+            <group
+                android:name="splash_badge_group"
+                android:pivotX="160"
+                android:pivotY="160"
+                android:scaleX="0.72"
+                android:scaleY="0.72">
+                <path
+                    android:name="splash_background"
+                    android:pathData="M 160 64 C 134.539 64 110.121 74.114 92.118 92.118 C 74.114 110.121 64 134.539 64 160 C 64 185.461 74.114 209.879 92.118 227.882 C 110.121 245.886 134.539 256 160 256 C 185.461 256 209.879 245.886 227.882 227.882 C 245.886 209.879 256 185.461 256 160 C 256 134.539 245.886 110.121 227.882 92.118 C 209.879 74.114 185.461 64 160 64 Z"
+                    android:fillColor="@color/ic_background"
+                    android:fillAlpha="0" />
+                <group
+                    android:scaleX="1.15"
+                    android:scaleY="1.15"
+                    android:translateX="97.9"
+                    android:translateY="97.9">
+                    <path
+                        android:name="splash_icon_primary"
+                        android:fillColor="@color/white"
+                        android:fillAlpha="0"
+                        android:pathData="M24 76L24 32C24 28.69 26.69 26 30 26L37.5 26C39.4 26 41.2 26.9 42.3 28.5L68 65L68 82L60 82C58.1 82 56.3 81.1 55.2 79.5L37 53L37 76C37 79.31 34.31 82 31 82L30 82C26.69 82 24 79.31 24 76Z" />
+                    <path
+                        android:name="splash_icon_pillar"
+                        android:fillColor="@color/white"
+                        android:fillAlpha="0"
+                        android:pathData="M71 44C71 40.69 73.69 38 77 38L78 38C81.31 38 84 40.69 84 44L84 76C84 79.31 81.31 82 78 82L77 82C73.69 82 71 79.31 71 76Z" />
+                    <path
+                        android:name="splash_icon_star"
+                        android:fillColor="@color/nurgram_accent"
+                        android:fillAlpha="0"
+                        android:pathData="M77.5 16.5C78.6 21.8 80.7 23.9 86 25C80.7 26.1 78.6 28.2 77.5 33.5C76.4 28.2 74.3 26.1 69 25C74.3 23.9 76.4 21.8 77.5 16.5Z" />
+                </group>
+            </group>
+        </vector>
+    </aapt:attr>
+
+    <target android:name="splash_badge_group">
+        <aapt:attr name="android:animation">
+            <set>
+                <objectAnimator
+                    android:propertyName="scaleX"
+                    android:startOffset="120"
+                    android:duration="420"
+                    android:valueFrom="0.72"
+                    android:valueTo="1.0"
+                    android:valueType="floatType"
+                    android:interpolator="@android:interpolator/fast_out_slow_in"/>
+                <objectAnimator
+                    android:propertyName="scaleY"
+                    android:startOffset="120"
+                    android:duration="420"
+                    android:valueFrom="0.72"
+                    android:valueTo="1.0"
+                    android:valueType="floatType"
+                    android:interpolator="@android:interpolator/fast_out_slow_in"/>
+            </set>
+        </aapt:attr>
+    </target>
+
+    <target android:name="splash_background">
+        <aapt:attr name="android:animation">
+            <objectAnimator
+                android:propertyName="fillAlpha"
+                android:startOffset="120"
+                android:duration="360"
+                android:valueFrom="0"
+                android:valueTo="1"
+                android:valueType="floatType"
+                android:interpolator="@android:interpolator/fast_out_slow_in"/>
+        </aapt:attr>
+    </target>
+
+    <target android:name="splash_icon_primary">
+        <aapt:attr name="android:animation">
+            <objectAnimator
+                android:propertyName="fillAlpha"
+                android:startOffset="160"
+                android:duration="360"
+                android:valueFrom="0"
+                android:valueTo="1"
+                android:valueType="floatType"
+                android:interpolator="@android:interpolator/fast_out_slow_in"/>
+        </aapt:attr>
+    </target>
+
+    <target android:name="splash_icon_pillar">
+        <aapt:attr name="android:animation">
+            <objectAnimator
+                android:propertyName="fillAlpha"
+                android:startOffset="180"
+                android:duration="360"
+                android:valueFrom="0"
+                android:valueTo="1"
+                android:valueType="floatType"
+                android:interpolator="@android:interpolator/fast_out_slow_in"/>
+        </aapt:attr>
+    </target>
+
+    <target android:name="splash_icon_star">
+        <aapt:attr name="android:animation">
+            <objectAnimator
+                android:propertyName="fillAlpha"
+                android:startOffset="220"
+                android:duration="360"
+                android:valueFrom="0"
+                android:valueTo="1"
+                android:valueType="floatType"
+                android:interpolator="@android:interpolator/fast_out_slow_in"/>
+        </aapt:attr>
+    </target>
+
+</animated-vector>

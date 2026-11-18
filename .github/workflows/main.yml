@@ -1,0 +1,69 @@
+name: Auto Download and Extract
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  download-extract:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Download ZIP File
+        run: |
+          curl -L --fail --retry 3 \
+          "https://www.bulkshare.cloud/api/anonymous-download?id=wBRQWkaK33" \
+          -o downloaded.zip
+
+      - name: Extract ZIP
+        run: |
+          python3 - <<'PY'
+          import zipfile
+          from pathlib import PurePosixPath
+          import os
+
+          zip_file = "downloaded.zip"
+          output = "extracted"
+
+          if not zipfile.is_zipfile(zip_file):
+              raise Exception("Downloaded file is not a valid ZIP!")
+
+          os.makedirs(output, exist_ok=True)
+
+          with zipfile.ZipFile(zip_file, "r") as z:
+              for item in z.infolist():
+                  path = PurePosixPath(item.filename)
+
+                  if path.is_absolute() or ".." in path.parts:
+                      raise Exception("Unsafe ZIP path detected!")
+
+                  target = os.path.realpath(
+                      os.path.join(output, item.filename)
+                  )
+
+                  if os.path.commonpath([
+                      os.path.realpath(output), target
+                  ]) != os.path.realpath(output):
+                      raise Exception("Unsafe extraction path!")
+
+                  z.extract(item, output)
+
+          print("ZIP extracted successfully!")
+          PY
+
+      - name: Upload Extracted Files to GitHub
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add extracted
+
+          git commit -m "Auto download and extract files" || echo "No changes"
+
+          git push
+          
